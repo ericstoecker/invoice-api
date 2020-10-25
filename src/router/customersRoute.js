@@ -5,7 +5,6 @@ const router = express.Router();
 //import models
 const Customer = require('../models/Customer');
 const Invoice = require('../models/Invoice');
-//const Car = require('../models/Car');
 
 //import helper functions
 const helper = require('../helperFunctions/helper');
@@ -79,8 +78,8 @@ router.put('/update/:customerNo', async (req, res) => {
     if(!customer) res.status(404).send('no customer found!');
 
     try {
-        await Customer.updateOne({ customerNo: req.params.customerNo }, req.body);
-        res.send('customer succesfully updated!');
+        const updated = await Customer.updateOne({ customerNo: req.params.customerNo }, req.body);
+        res.json(updated);
     }
     catch(error) {
         res.status(400).send(error);
@@ -123,7 +122,6 @@ router.put('/addinvoice/:customerNo', async (req, res) => {
     try {
         const saved = await invoiceData.save();
         await Customer.updateOne({ customerNo: req.params.customerNo }, { invoices: invoices });
-        //console.log(saved);
         res.send(saved);
     }
     catch(error) {
