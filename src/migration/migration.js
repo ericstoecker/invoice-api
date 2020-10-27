@@ -11,7 +11,6 @@ const Car = require('../models/Car');
 
 //function call
 migration();
-//cleanCarData();
 
 
 
@@ -119,44 +118,6 @@ async function migrateInvoicesCars(positionsArray) {
     }
 }
 
-/*async function migrateCars() {
-    let file = fs.readFileSync('../csv_data/Rechnungen.csv');
-
-    //changes all ',' in numbers into '.' so javascript can read it as double
-    file = file.toString().replace(/,/g, '.').replace(/\r/g, '');
-
-    //creates array of invoices
-    let invoices = file.split('\n');
-
-    for(let i = 1; i < invoices.length; i++) {
-        const invoice = invoices[i].split(';');
-
-        const carData = new Car({
-            CarId: i,
-            customerNo: invoice[1],
-            manufacturer: invoice[3],
-            licensePlate: invoice[4],
-            admissionDate: invoice[5],
-            chassisNo: invoice[6],
-            model: invoice[7],
-            typeKey: invoice[8],
-            receptionDay: invoice[9],
-            kmStatus: invoice[10],
-            capacity: invoice[11],
-            kW: invoice[12],
-            tuev: invoice[13],
-            exhaustInvestigation: invoice[14],
-            isActive: false
-        });
-        try {
-            carData.save();
-        }
-        catch(error) {
-            console.log(error);
-        }
-    }
-}*/
-
 //adds all customers from Kunden.csv to DB
 async function migrateCustomers() {
     let file = fs.readFileSync('../csv_data/Kunden.csv');
@@ -175,9 +136,6 @@ async function migrateCustomers() {
         const invoiceNumbers = [];
 
         invoices.map(invoice => invoiceNumbers.push(invoice.invoiceNo));
-        //searches for all cars of customer
-        //const cars = await Car.find({ customerNo: customer[0] });
-        //const carIds = [];
 
 
         const customerData = new Customer({
