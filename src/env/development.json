@@ -1,0 +1,12 @@
+{
+    "database": {
+        "type": "mongodb",
+        "host": "localhost",
+        "port": "27017",
+        "name": "invoice"
+    },
+
+    "appProperties": {
+        "port": "8888"
+    }
+}
