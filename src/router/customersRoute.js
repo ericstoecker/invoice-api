@@ -122,7 +122,7 @@ router.put('/addinvoice/:customerNo', async (req, res) => {
     try {
         const saved = await invoiceData.save();
         await Customer.updateOne({ customerNo: req.params.customerNo }, { invoices: invoices });
-        res.send(saved);
+        res.json(saved);
     }
     catch(error) {
         res.status(400).send(error);
@@ -137,8 +137,8 @@ router.delete('/delete/:customerNo', async (req, res) => {
     if(!customer) res.status(404).send('no customer found!');
     
     try {
-        await Customer.findOneAndDelete({ customerNo: req.params.customerNo });
-        res.send('customer succesfully deleted!');
+        const deletedCustomer = await Customer.findOneAndDelete({ customerNo: req.params.customerNo });
+        res.json(deletedCustomer);
     }
     catch(error) {
         res.send(error);
