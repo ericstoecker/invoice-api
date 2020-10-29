@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+//properties
+const properties = require('../env/development.json');
 
 //import models
 const Customer = require('../models/Customer');
@@ -30,6 +32,13 @@ router.put('/addinvoice/:customerNo', async (req, res) => {
 
     invoices.push(invoiceNo);
 
+    let vat = properties.config.VAT;
+    vat = Number(vat);
+
+    //calculate brutto
+    const totalNetto = req.body.totalNetto;
+    const totalBrutto = totalNetto * (100 + vat) / 100;
+
     //creates new invoice
     const invoiceData = new Invoice({
         invoiceNo: invoiceNo,
@@ -42,13 +51,15 @@ router.put('/addinvoice/:customerNo', async (req, res) => {
         wage2: req.body.wage2,
         amount2: req.body.amount2,
         price2: req.body.price2,
-        totalNetto: req.body.totalNetto,
-        totalBrutto: req.body.totalBrutto,
+        totalNetto: totalNetto,
+        totalBrutto: totalBrutto,
         positions: req.body.positions,
         receptionDay: req.body.receptionDay,
         kmStatus: req.body.kmStatus,
         tuev: req.body.tuev,
-        exhaustInvestigation: req.body.exhaustInvestigation
+        exhaustInvestigation: req.body.exhaustInvestigation,
+        status: req.body.status,
+        VAT: vat
     });
 
     try {
