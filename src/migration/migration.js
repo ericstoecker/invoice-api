@@ -1,11 +1,12 @@
-const mongoose = require('mongoose');
-const fs = require('fs');
+const dbConnection = require('../dbConnection/dbConnection');
 const { v1: uuidv1 } = require('uuid');
 
 //import mongoose models
 const Customer = require('../models/Customer');
 const Invoice = require('../models/Invoice');
 const Car = require('../models/Car');
+
+const toolbox = require('../toolbox/toolbox');
 
 
 
@@ -15,7 +16,8 @@ migration();
 
 
 function readPositions() {
-    let file = fs.readFileSync('../csv_data/Artikel.csv', 'latin1');
+    //let file = fs.readFileSync('../csv_data/Artikel.csv', 'latin1');
+    let file = toolbox.readCsv('Artikel', 'latin1');
 
     //changes all ',' in numbers into '.' so javascript can read it as double
     file = file.toString().replace(/,/g, '.').replace(/\r/g, '').replace(/"/g, '');
@@ -45,7 +47,8 @@ function readPositions() {
 
 //adds cars and invoices to DB
 async function migrateInvoicesCars(positionsArray) {
-    let file = fs.readFileSync('../csv_data/Rechnungen.csv');
+    //let file = fs.readFileSync('../csv_data/Rechnungen.csv');
+    let file = toolbox.readCsv('Rechnungen');
 
     //changes all ',' in numbers into '.' so javascript can read it as double
     file = file.toString().replace(/,/g, '.').replace(/\r/g, '');
@@ -106,7 +109,9 @@ async function migrateInvoicesCars(positionsArray) {
             receptionDay: invoice[9],
             kmStatus: invoice[10],
             tuev: invoice[13],
-            exhaustInvestigation: invoice[14]
+            exhaustInvestigation: invoice[14],
+            status: 'printed',
+            VAT: 19
         });
         try {
             carData.save();
@@ -120,7 +125,8 @@ async function migrateInvoicesCars(positionsArray) {
 
 //adds all customers from Kunden.csv to DB
 async function migrateCustomers() {
-    let file = fs.readFileSync('../csv_data/Kunden.csv');
+    //let file = fs.readFileSync('../csv_data/Kunden.csv');
+    let file = toolbox.readCsv('Kunden');
 
     //deletes all unnecessary " and \r
     file = file.toString().replace(/"|\r/g, '');
@@ -158,7 +164,7 @@ async function migrateCustomers() {
 }
 
 //cleans cars from duplicates
-async function cleanCarData() {
+/* async function cleanCarData() {
     //connects to DB
     await mongoose.connect('mongodb://localhost:27017/invoice', { useNewUrlParser: true },() => {
         console.log('connected to DB!');
@@ -191,14 +197,15 @@ async function cleanCarData() {
             }
         }
     }
-}
+} */
 
 
 async function migration() {
     //connects to DB
-    await mongoose.connect('mongodb://localhost:27017/invoice', { useNewUrlParser: true },() => {
+    /* await mongoose.connect('mongodb://localhost:27017/invoice', { useNewUrlParser: true },() => {
         console.log('connected to DB!');
-    });
+    }); */
+    await dbConnection.connect();
 
     //reads Artikel.csv
     const positions = readPositions();
@@ -208,8 +215,10 @@ async function migration() {
         console.log("invoices and cars saved to DB!");
     });
     //adds customers to DB
-    migrateCustomers().then(() => {
+    await migrateCustomers().then(() => {
         console.log("customers saved to DB!");
     });
+
+    dbConnection.disconnect();
 }
 

@@ -1,16 +1,14 @@
 const express = require('express');
 const router = express.Router();
 
-//properties
-const properties = require('../env/development.json');
-
 //import models
 const Customer = require('../models/Customer');
 const Invoice = require('../models/Invoice');
 
-//import helper functions
-const helper = require('../helperFunctions/helper');
-
+//import toolbox functions
+const toolbox = require('../toolbox/toolbox');
+//get properties
+const properties = toolbox.readProperties();
 
 //get all invoices
 router.get('/invoices', async (req, res) => {
@@ -28,7 +26,7 @@ router.post('/addinvoice/:customerNo', async (req, res) => {
     //checks if customer exists
     if(!customer) res.status(404).send('no customer found!');
     //creates new invoiceNo
-    const invoiceNo = await helper.invoiceNumber();
+    const invoiceNo = await toolbox.invoiceNumber();
 
     invoices.push(invoiceNo);
 

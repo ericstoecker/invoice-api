@@ -4,10 +4,9 @@ const router = express.Router();
 
 //import models
 const Customer = require('../models/Customer');
-const Invoice = require('../models/Invoice');
 
-//import helper functions
-const helper = require('../helperFunctions/helper');
+//import toolbox functions
+const toolbox = require('../toolbox/toolbox');
 
 
 
@@ -38,7 +37,7 @@ router.post('/create', async (req, res) => {
         res.status(404).send('this customer already exists!');
     } else {
         //creates new customer number
-        const customerNo = await helper.customerNumber();
+        const customerNo = await toolbox.customerNumber();
 
         //creates a new customer
         const customerData = new Customer({

@@ -1,10 +1,11 @@
 const express = require('express');
 const app = express();
-const mongoose = require('mongoose');
+const dbConnection = require('./src/dbConnection/dbConnection');
 const cors = require('cors');
 
 //properties
-const properties = require('./src/env/development.json');
+const toolbox = require('./src/toolbox/toolbox');
+const properties = toolbox.readProperties();
 
 //import routes
 const customersRoute = require('./src/router/customersRoute');
@@ -16,12 +17,7 @@ const invoicesRoute = require('./src/router/invoicesRoute');
 const middleware = require('./src/middleware/middleware');
 
 //connecting to DB
-const db = properties.database;
-
-mongoose.connect(`${db.type}://${db.host}:${db.port}/${db.name}`, { useNewUrlParser: true }, () => {
-    console.log('connected to DB!');
-});
-
+dbConnection.connect();
 
 //Middleware
 //body parsing
