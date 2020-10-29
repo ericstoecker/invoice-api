@@ -8,5 +8,9 @@
 
     "appProperties": {
         "port": "8888"
+    },
+
+    "config": {
+        "VAT": "16"
     }
 }

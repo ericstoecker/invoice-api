@@ -10,6 +10,7 @@ const properties = require('./src/env/development.json');
 const customersRoute = require('./src/router/customersRoute');
 const carsRoute = require('./src/router/carsRoute');
 const accessRoute = require('./src/router/accessRoute');
+const invoicesRoute = require('./src/router/invoicesRoute');
 
 //import middleware
 const middleware = require('./src/middleware/middleware');
@@ -32,6 +33,7 @@ app.use(express.json());
 //uses token validation
 app.use('/api/customers', middleware.verifyToken, middleware.validateToken, customersRoute);
 app.use('/api/cars', middleware.verifyToken, middleware.validateToken, carsRoute);
+app.use('/api/invoices', middleware.verifyToken, middleware.validateToken, invoicesRoute);
 
 //doesnt use token validation
 app.use('/api/access', accessRoute);
