@@ -21,7 +21,7 @@ router.get('/invoices', async (req, res) => {
 });
 
 //add invoice
-router.put('/addinvoice/:customerNo', async (req, res) => {
+router.post('/addinvoice/:customerNo', async (req, res) => {
     //searches for customer
     const customer = await Customer.findOne({ customerNo: req.params.customerNo });
     const invoices = customer.invoices;
@@ -69,6 +69,66 @@ router.put('/addinvoice/:customerNo', async (req, res) => {
     }
     catch(error) {
         res.status(400).send(error);
+    }
+});
+
+//updates status of invoice
+router.put('/updateStatus/:invoiceNo', async (req, res) => {
+
+    //search for invoice
+    const invoice = await Invoice.findOne({ invoiceNo: req.params.invoiceNo });
+
+    if(!invoice) res.status(404).send('no invoice found!');
+
+    const newStatus = req.body.status;
+    const actualStatus = invoice.status;
+
+    //check if new status is valid
+    if(newStatus !== "printed" || newStatus !== "canceled") {
+        res.status(400).send("invalid status");
+
+    } else if(actualStatus === "canceled") {
+        res.status(400).send("invoice has been canceled already");
+
+    } else {
+        invoice.status = newStatus;
+
+        try {
+            const updatedInvoice = Invoice.updateOne({ invoiceNo: req.params.invoiceNo }, invoice);
+            res.json(updatedInvoice);
+        }
+        catch(error) {
+            res.status(400).send(error);
+        }
+    }
+
+});
+
+//updates invoice
+router.put('/updateInvoice/:invoiceNo', async (req, res) => {
+
+    //serch invoice
+    const invoice = await Invoice.findOne({ invoiceNo: req.params.invoiceNo });
+
+    if(!invoice) res.status(404).send('no invoice found!');
+
+    //check status of invoice
+    const status = invoice.status;
+
+    if(status !== "draft") {
+        res.status(403).send("invoice can not be edited anymore!");
+    
+    //if status is valid update invoice
+    } else {
+        const newInvoice = req.body;
+
+        try {
+            const updatedInvoice = Invoice.updateOne({ invoiceNo: req.params.invoiceNo }, newInvoice);
+            res.json(updatedInvoice);
+        }
+        catch(error) {
+            res.status(400).send(error);
+        }
     }
 });
 

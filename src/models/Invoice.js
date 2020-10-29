@@ -19,7 +19,7 @@ const Invoice = mongoose.model('invoice', {
     kmStatus: String,
     tuev: String,
     exhaustInvestigation: String,
-    //status: String,
+    status: String,
     VAT: Number
 });
 
