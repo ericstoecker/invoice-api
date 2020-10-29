@@ -13,7 +13,27 @@ const toolbox = require('../toolbox/toolbox');
 //function call
 migration();
 
+async function migration() {
+    //connects to DB
+    /* await mongoose.connect('mongodb://localhost:27017/invoice', { useNewUrlParser: true },() => {
+        console.log('connected to DB!');
+    }); */
+    await dbConnection.connect();
 
+    //reads Artikel.csv
+    const positions = readPositions();
+
+    //adds invoices to DB
+    await migrateInvoicesCars(positions).then(() => {
+        console.log("invoices and cars saved to DB!");
+    });
+    //adds customers to DB
+    await migrateCustomers().then(() => {
+        console.log("customers saved to DB!");
+    });
+
+    dbConnection.disconnect();
+}
 
 function readPositions() {
     //let file = fs.readFileSync('../csv_data/Artikel.csv', 'latin1');
@@ -200,25 +220,5 @@ async function migrateCustomers() {
 } */
 
 
-async function migration() {
-    //connects to DB
-    /* await mongoose.connect('mongodb://localhost:27017/invoice', { useNewUrlParser: true },() => {
-        console.log('connected to DB!');
-    }); */
-    await dbConnection.connect();
 
-    //reads Artikel.csv
-    const positions = readPositions();
-
-    //adds invoices to DB
-    await migrateInvoicesCars(positions).then(() => {
-        console.log("invoices and cars saved to DB!");
-    });
-    //adds customers to DB
-    await migrateCustomers().then(() => {
-        console.log("customers saved to DB!");
-    });
-
-    dbConnection.disconnect();
-}
 
