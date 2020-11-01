@@ -10,13 +10,13 @@ class DBConnection {
 
     async connect() {
         const db = this.db;
-        mongoose.connect(db.uri, () => {
+        await mongoose.connect(db.uri, () => {
             console.log('connected to DB!');
         });
     }
 
     async disconnect() {
-        mongoose.connection.close(() => {
+        await mongoose.connection.close(() => {
             console.log('connection to DB closed!');
         });
     }
