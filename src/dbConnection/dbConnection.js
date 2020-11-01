@@ -10,7 +10,7 @@ class DBConnection {
 
     async connect() {
         const db = this.db;
-        mongoose.connect(`${db.type}://${db.host}:${db.port}/${db.name}`, { useNewUrlParser: true }, () => {
+        mongoose.connect(db.uri, () => {
             console.log('connected to DB!');
         });
     }
