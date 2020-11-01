@@ -1,6 +1,6 @@
 {
     "database": {
-        "uri": "mongodb+srv://ASBInvoiceMaster:<password>@cluster0.pas9u.mongodb.net/ASBInvoice?retryWrites=true&w=majority",
+        "uri": "mongodb://localhost:27017/invoice",
         "type": "mongodb",
         "host": "localhost",
         "port": "27017",

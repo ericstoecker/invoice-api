@@ -37,6 +37,22 @@ router.post('/addinvoice/:customerNo', async (req, res) => {
     const totalNetto = req.body.totalNetto;
     const totalBrutto = totalNetto * (100 + vat) / 100;
 
+    //create new date
+    const date = new Date();
+
+    //format day and month 
+    let day = date.getDay() + 1;
+    day = day >= 10 ? day : `0${day}`;
+
+    let month = date.getMonth() + 1;
+    month = month >= 10 ? month : `0${month}`;
+
+    const year = date.getFullYear();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    
+    const invoiceDate = `${day}.${month}.${year} ${hours}:${minutes}`;
+
     //set "draft" as default status if nothing else was send by the client
     const status = req.body.status ? req.body.status : "draft";
 
@@ -45,7 +61,7 @@ router.post('/addinvoice/:customerNo', async (req, res) => {
         invoiceNo: invoiceNo,
         customerNo: req.body.customerNo,
         carId: req.body.carId,
-        invoiceDate: req.body.invoiceDate,
+        invoiceDate: invoiceDate,
         wage1: req.body.wage1,
         amount1: req.body.amount1,
         price1: req.body.price1,
