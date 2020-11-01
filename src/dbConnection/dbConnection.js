@@ -26,6 +26,7 @@ class DBConnection {
     }
 }
 
+//create instance of connection
 const dbConnection = new DBConnection();
 
 module.exports = dbConnection;

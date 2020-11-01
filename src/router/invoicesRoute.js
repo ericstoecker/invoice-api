@@ -37,6 +37,9 @@ router.post('/addinvoice/:customerNo', async (req, res) => {
     const totalNetto = req.body.totalNetto;
     const totalBrutto = totalNetto * (100 + vat) / 100;
 
+    //set "draft" as default status if nothing else was send by the client
+    const status = req.body.status ? req.body.status : "draft";
+
     //creates new invoice
     const invoiceData = new Invoice({
         invoiceNo: invoiceNo,
@@ -56,7 +59,7 @@ router.post('/addinvoice/:customerNo', async (req, res) => {
         kmStatus: req.body.kmStatus,
         tuev: req.body.tuev,
         exhaustInvestigation: req.body.exhaustInvestigation,
-        status: req.body.status,
+        status: status,
         VAT: vat
     });
 
