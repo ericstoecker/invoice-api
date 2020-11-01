@@ -6,7 +6,7 @@ const fs = require('fs');
 module.exports = {
     //reads properties file and returns it
     readProperties: function() {
-        const propertiesFileName = "development.json"
+        const propertiesFileName = "properties.json"
         const properties = require(`../env/${propertiesFileName}`);
 
         return properties;

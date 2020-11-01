@@ -1,3 +1,2 @@
 *.csv
-production.json
-development.json
+properties.json
