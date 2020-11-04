@@ -10,7 +10,7 @@ class DBConnection {
 
     async connect() {
         const db = this.db;
-        await mongoose.connect(db.uri, () => {
+        await mongoose.connect(db.uri, db.options, () => {
             console.log('connected to DB!');
         });
     }
