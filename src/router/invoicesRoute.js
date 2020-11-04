@@ -50,7 +50,7 @@ router.post('/addinvoice/:customerNo', async (req, res) => {
     const year = date.getFullYear();
     const hours = date.getHours();
     const minutes = date.getMinutes();
-    
+
     const invoiceDate = `${day}.${month}.${year} ${hours}:${minutes}`;
 
     //set "draft" as default status if nothing else was send by the client
@@ -98,20 +98,21 @@ router.put('/updateStatus/:invoiceNo', async (req, res) => {
     if(!invoice) res.status(404).send('no invoice found!');
 
     const newStatus = req.body.status;
-    const actualStatus = invoice.status;
 
+    const actualStatus = invoice.status;
+    
     //check if new status is valid
-    if(newStatus !== "printed" || newStatus !== "canceled") {
-        res.status(400).send("invalid status");
+    if(newStatus !== "printed" && newStatus !== "canceled") {
+        res.status(400).json({message: "invalid status"});
 
     } else if(actualStatus === "canceled") {
-        res.status(400).send("invoice has been canceled already");
+        res.status(400).json({message: "invoice has been canceled already"});
 
     } else {
-        invoice.status = newStatus;
+        const statusUpdate = { status: newStatus };
 
         try {
-            const updatedInvoice = Invoice.updateOne({ invoiceNo: req.params.invoiceNo }, invoice);
+            const updatedInvoice = await Invoice.findOneAndUpdate({ invoiceNo: req.params.invoiceNo }, statusUpdate, { new: true });
             res.json(updatedInvoice);
         }
         catch(error) {
@@ -140,7 +141,7 @@ router.put('/updateInvoice/:invoiceNo', async (req, res) => {
         const newInvoice = req.body;
 
         try {
-            const updatedInvoice = Invoice.updateOne({ invoiceNo: req.params.invoiceNo }, newInvoice);
+            const updatedInvoice = Invoice.findOneAndUpdate({ invoiceNo: req.params.invoiceNo }, newInvoice, { new: true });
             res.json(updatedInvoice);
         }
         catch(error) {

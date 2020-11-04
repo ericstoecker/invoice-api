@@ -69,7 +69,7 @@ router.put('/update/:customerNo', async (req, res) => {
     if(!customer) res.status(404).send('no customer found!');
 
     try {
-        const updated = await Customer.updateOne({ customerNo: req.params.customerNo }, req.body);
+        const updated = await Customer.findOneAndUpdate({ customerNo: req.params.customerNo }, req.body, { new: true });
         res.json(updated);
     }
     catch(error) {
