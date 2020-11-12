@@ -7,7 +7,7 @@ module.exports = {
     //reads properties file and returns it
     readProperties: function() {
         const propertiesFileName = "properties.json"
-        const properties = require(`../env/${propertiesFileName}`);
+        const properties = require(`../../${propertiesFileName}`);
 
         return properties;
     },
