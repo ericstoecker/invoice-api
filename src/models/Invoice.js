@@ -18,7 +18,9 @@ const Invoice = mongoose.model('invoice', {
     receptionDay: String,
     kmStatus: String,
     tuev: String,
-    exhaustInvestigation: String
+    exhaustInvestigation: String,
+    status: String,
+    VAT: Number
 });
 
 module.exports = Invoice;

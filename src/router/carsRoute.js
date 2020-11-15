@@ -21,10 +21,9 @@ router.put('/addcar/:customerNo', async (req, res) => {
     //checks if customer exists
     if(!customer) res.status(404).send('no customer found!');
     //checks if car exists already
-    const car = await Car.findOne({ chassisNo: req.body.chassisNo });
-    //const car = cars.filter(c => c.chassisNo == req.body.chassisNo);
+    /* const car = await Car.findOne({ chassisNo: req.body.chassisNo });
 
-    if(car) res.send("car already exists!");
+    if(car) res.send("car already exists!"); */
 
     //creates uuid
     const uuid = uuidv1();
@@ -45,7 +44,6 @@ router.put('/addcar/:customerNo', async (req, res) => {
 
     try {
         const saved = await carData.save();
-        console.log(saved);
         res.json(saved);
     }
     catch(error) {

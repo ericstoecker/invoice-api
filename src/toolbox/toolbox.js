@@ -1,7 +1,24 @@
 const Invoice = require('../models/Invoice');
 const Customer = require('../models/Customer');
 
+const fs = require('fs');
+
 module.exports = {
+    //reads properties file and returns it
+    readProperties: function() {
+        const propertiesFileName = "properties.json"
+        const properties = require(`../../${propertiesFileName}`);
+
+        return properties;
+    },
+
+    readCsv: function(csvFileName, alphabet) {
+        if(!alphabet) alphabet = 'utf-8';
+
+        const path = `../csv_data/${csvFileName}.csv`;
+        return fs.readFileSync(path, alphabet);
+    },
+
     //generates new invoice number
     invoiceNumber: async () => {
         //array of all existing invoice numbers
