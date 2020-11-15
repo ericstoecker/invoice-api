@@ -103,10 +103,10 @@ router.put('/updateStatus/:invoiceNo', async (req, res) => {
     
     //check if new status is valid
     if(newStatus !== "printed" && newStatus !== "canceled") {
-        res.status(400).json({message: "invalid status"});
+        res.status(400).send("invalid status");
 
     } else if(actualStatus === "canceled") {
-        res.status(400).json({message: "invoice has been canceled already"});
+        res.status(400).send("invoice has been canceled already");
 
     } else {
         const statusUpdate = { status: newStatus };
