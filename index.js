@@ -24,6 +24,9 @@ dbConnection.connect();
 app.use(cors());
 app.use(express.json());
 
+app.get("/", (req, res) => {
+    res.send("test");
+});
 
 //routing
 //uses token validation
