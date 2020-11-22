@@ -30,9 +30,9 @@ app.get("/", (req, res) => {
 
 //routing
 //uses token validation
-app.use('/api/customers', middleware.verifyToken, middleware.validateToken, customersRoute);
-app.use('/api/cars', middleware.verifyToken, middleware.validateToken, carsRoute);
-app.use('/api/invoices', middleware.verifyToken, middleware.validateToken, invoicesRoute);
+app.use('/api/customers', /* middleware.verifyToken, middleware.validateToken,  */customersRoute);
+app.use('/api/cars', /* middleware.verifyToken, middleware.validateToken,  */carsRoute);
+app.use('/api/invoices', /* middleware.verifyToken, middleware.validateToken, */ invoicesRoute);
 
 //doesnt use token validation
 app.use('/api/access', accessRoute);
